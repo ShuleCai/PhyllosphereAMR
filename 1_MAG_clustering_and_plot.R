@@ -14,7 +14,7 @@ set.seed(123)
 
 # Load the original dataset
 # Note: Path has been anonymized for GitHub sharing
-origin_data <- read.csv("/path/to/your/MAG_bigtable.csv", check.names = FALSE)
+origin_data <- read.csv("MAG_bigtable.csv", check.names = FALSE)
 
 # Define feature categories for analysis
 
