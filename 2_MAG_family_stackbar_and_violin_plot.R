@@ -5,7 +5,6 @@ library(ggpubr)
 library(agricolae)
 
 # Load the original dataset and clustering results
-# Note: Paths have been anonymized for GitHub sharing
 data_s <- read.csv('MAG_datatable_w_Clusters.csv')
 
 # Optional: Rename clusters for better interpretation
