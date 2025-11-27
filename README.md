@@ -15,5 +15,3 @@ PhyllosphereAMR is an code repository for the analysis and visualization of anti
 2. Install R and required packages. Refer to each script for package installation instructions.
 3. Run `main.R` or execute individual module scripts in order.
 4. Output results and figures will be saved to designated folders.
-
-111
