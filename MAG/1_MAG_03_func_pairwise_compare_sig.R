@@ -1,12 +1,9 @@
-# Read the dataset
-data_s <- read.csv("/path/to/data/MAG/MAG_bigtable_w_Clusters.csv", check.names = FALSE, row.names = 1)
-data <- data_s
-
-# Load required packages
 library(tidyverse)
 library(ggplot2)
 library(broom)
 library(ggpubr)
+
+data <- read.csv("/path/to/data/source_data.csv", check.names = FALSE, row.names = 1)
 
 # Define the columns to plot (Antibiotics)
 columns_to_plot <- c(
@@ -82,5 +79,5 @@ for (col in VFG) {
     theme(legend.position = "none") # Hide the legend
 
   # Save the plot as a PDF file for each VFG column
-  ggsave(paste0("/path/to/project/figures/CR_VFG_subtype_bar_sig/", col, "_barplot.pdf"), p, family = "ArialMT")
+  ggsave(paste0("/path/to/figure/CR_VFG_subtype_bar_sig/", col, "_barplot.pdf"), p, family = "ArialMT")
 }

@@ -1,6 +1,5 @@
-# Load necessary packages
 library(raster)
-library(RANN) # For fast nearest neighbor search
+library(RANN)
 library(tidyverse)
 
 # Convert raster stack to data frame including coordinates, removing NA if specified
@@ -48,11 +47,11 @@ na_stats %>% View()
 plot(is.na(sub_stack_agri[["Bio_197_NDVI"]]))
 
 # Identify column differences between CSV files from different sources
-names(read.csv("/path/to/project/agri_models_x_2_feature_selected_iqr.csv")) %>%
-  union(names(read.csv("/path/to/project/nonagri_models_x_2_feature_selected_iqr.csv"))) %>%
+names(read.csv("/path/to/data/agri_models_x_2_feature_selected_iqr.csv")) %>%
+  union(names(read.csv("/path/to/data/nonagri_models_x_2_feature_selected_iqr.csv"))) %>%
   setdiff(
-    names(read.csv("/path/to/project/agri_models_x_2_feature_selected.csv")) %>%
-      union(names(read.csv("/path/to/project/nonagri_models_x_2_feature_selected.csv")))
+    names(read.csv("/path/to/data/agri_models_x_2_feature_selected.csv")) %>%
+      union(names(read.csv("/path/to/data/nonagri_models_x_2_feature_selected.csv")))
   ) %>%
   sort()
 
@@ -112,9 +111,6 @@ fill_na_with_nearest <- function(raster_stack, ref_layer, layers) {
 # Execute NA filling
 filled_stack <- fill_na_with_nearest(tif_stack, reference_layer, layers_to_fill)
 
-# Optional: Save filled raster stack
-# saveRDS(filled_stack, "/path/to/data/tif_stack_data_leaf_filled.rds")
-
 # Compare NA percentages before and after filling
 original_na_stats <- calculate_na_percentage(sub_stack_agri)
 filled_na_stats <- calculate_na_percentage(filled_stack)
@@ -124,6 +120,3 @@ comparison <- merge(original_na_stats, filled_na_stats,
   suffixes = c("_original", "_filled")
 )
 comparison$NA_Reduction <- comparison$NA_Percentage_original - comparison$NA_Percentage_filled
-
-# Display comparison of NA reduction
-print(comparison)

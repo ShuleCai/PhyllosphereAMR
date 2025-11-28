@@ -305,9 +305,9 @@ combined_plot <- wrap_plots(
 )
 
 # Save the individual and combined plots
-ggsave(y_density, filename = "/path/to/data/Future2050_1_worldmap_subplot_y.png", height = 5, width = 1, dpi = 600)
-ggsave(x_density, filename = "/path/to/data/Future2050_1_worldmap_subplot_x.png", height = 1, width = 6.5, dpi = 600)
-ggsave(main_map, filename = "/path/to/data/Future2050_1_worldmap.png", height = 7, width = 9, dpi = 600)
+ggsave(y_density, filename = "/path/to/figure/Future2050_1_worldmap_subplot_y.png", height = 5, width = 1, dpi = 600)
+ggsave(x_density, filename = "/path/to/figure/Future2050_1_worldmap_subplot_x.png", height = 1, width = 6.5, dpi = 600)
+ggsave(main_map, filename = "/path/to/figure/Future2050_1_worldmap.png", height = 7, width = 9, dpi = 600)
 
 # Optional: Save the legend plot (if needed)
 legend_plot <- ggplot() +
@@ -340,7 +340,7 @@ legend_plot <- ggplot() +
   ) +
   labs(fill = "Enterobacteriaceae Abundance (%)")
 
-ggsave(legend_plot, filename = "/path/to/data/Future2050_1_worldmap_legend.pdf", family = "ArialMT")
+ggsave(legend_plot, filename = "/path/to/figure/Future2050_1_worldmap_legend.pdf", family = "ArialMT")
 
 # Plot distribution density for both 2010 and 2050 data
 ggplot(data = final_result_future, aes(x = mean_predict_future_agri2050)) +
@@ -370,7 +370,7 @@ ggplot(data = final_result_future, aes(x = mean_predict_future_agri2050)) +
   )
 
 # Save the distribution density plot
-ggsave("/path/to/data/Future2050_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
+ggsave("/path/to/figure/Future2050_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
 
 # Calculating summary statistics (mean, SD, standard error) for 2010 and 2050 predictions
 library(dplyr)
@@ -444,4 +444,4 @@ ggplot(combined_stats) +
   guides(color = guide_legend(title = "Year"))
 
 # Save the line plot comparing 2010 and 2050 predictions
-ggsave("/path/to/data/Future2050_compare2010_lineplot.pdf", family = "ArialMT", width = 145, height = 20, units = "mm")
+ggsave("/path/to/figure/Future2050_compare2010_lineplot.pdf", family = "ArialMT", width = 145, height = 20, units = "mm")

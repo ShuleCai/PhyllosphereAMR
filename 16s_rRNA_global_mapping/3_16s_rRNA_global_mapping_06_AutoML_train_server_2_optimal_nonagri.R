@@ -2,7 +2,6 @@ library(h2o)
 
 # Initialize the H2O cluster with specified number of threads and memory size
 h2o.init(nthreads = 10, max_mem_size = "80G")
-# h2o.shutdown()  # Uncomment to shut down the H2O cluster after processing
 
 # Read the feature matrix X and target variable y for non-agricultural samples
 X <- read.csv("/path/to/data/nonagri_models_x_2_feature_selected.csv") # Feature matrix
@@ -40,15 +39,15 @@ for (seed in c(9)) {
   )
 
   # Save the trained AutoML model results to a file
-  saveRDS(aml, paste0("./optimal/automl_res_seed", seed, ".rds"))
+  saveRDS(aml, paste0("/path/to/data/automl_res_seed", seed, ".rds"))
 
   # Plot SHAP summary plot for feature importance
-  png(paste0("./seeds/automl_res_seed", seed, "_shap.png"), family = "ArialMT")
+  png(paste0("/path/to/figure/automl_res_seed", seed, "_shap.png"), family = "ArialMT")
   h2o.shap_summary_plot(aml@leader, newdata = test)
   dev.off()
 
   # Plot variable importance for the best model
-  pdf(paste0("./seeds/automl_res_seed", seed, "_imp.pdf"), family = "ArialMT")
+  pdf(paste0("/path/to/figure/automl_res_seed", seed, "_imp.pdf"), family = "ArialMT")
   h2o.varimp_plot(aml@leader)
   dev.off()
 }

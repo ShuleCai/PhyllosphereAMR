@@ -5,7 +5,7 @@ library(cowplot)
 library(scales)
 
 # Calculate the proportion of pixels with variation > 0.1
-sum(final_result$variation > 0.1) / nrow(final_result) # Output: 0.0006281026
+sum(final_result$variation > 0.1) / nrow(final_result)
 
 # 4. Create a variation map
 # Plot the map
@@ -44,7 +44,7 @@ ggplot() +
     plot.title = element_text(hjust = 0.5, size = 12)
   ) +
   labs(title = "Ensemble coefficient of variation")
-ggsave("/path/to/project/ML/final/extrapolation_0_coefficient_variation_worldmap.pdf", family = "ArialMT")
+ggsave("/path/to/figure/extrapolation_0_coefficient_variation_worldmap.pdf", family = "ArialMT")
 
 # 5. Create custom bins for the data
 # Define binning rules: one bin for <50%, and then 5% bins for values >50%
@@ -90,5 +90,5 @@ ggplot(result, aes(x = range_bin, y = percentage)) +
   ) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
   coord_flip() # Flip the bars to display horizontally
-ggsave("/path/to/project/ML/final/extrapolation_0_coefficient_variation_boxplot.pdf", family = "ArialMT")
-write.csv(result, "/path/to/project/ML/final/extrapolation_0_coefficient_variation_boxplot.csv", row.names = FALSE)
+ggsave("/path/to/figure/extrapolation_0_coefficient_variation_boxplot.pdf", family = "ArialMT")
+write.csv(result, "/path/to/data/extrapolation_0_coefficient_variation_boxplot.csv", row.names = FALSE)

@@ -1,11 +1,9 @@
-# Load necessary libraries
 library(tidyverse)
 library(FactoMineR)
 library(geometry)
 library(sf)
 
 # 1. Data preparation and PCA analysis
-# Perform PCA on the res_bands data frame
 pca_result <- PCA(res_bands, scale.unit = TRUE, graph = FALSE, ncp = 20)
 
 # Extract eigenvalues and cumulative variance explained
@@ -106,7 +104,7 @@ ggplot(result_counts, aes(x = range_bin, y = percentage)) +
   ) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
   coord_flip() # Horizontal display of bars
-ggsave("/path/to/data/extrapolation_2_convexhull_percentage_boxplot.pdf", family = "ArialMT")
+ggsave("/path/to/figure/extrapolation_2_convexhull_percentage_boxplot.pdf", family = "ArialMT")
 write.csv(result_counts, "/path/to/data/extrapolation_2_convexhull_percentage_boxplot.csv", row.names = FALSE)
 
 # 10. Plot the uncertainty map
@@ -143,5 +141,5 @@ ggplot() +
     panel.background = element_rect(fill = "lightgray"),
   ) +
   labs(title = paste0("Proportion of PC pairs covered by convex hulls (", k, " PCs, ", num_pairs, " pairs)"))
-ggsave("/path/to/data/extrapolation_2_convexhull_percentage_worldmap.pdf", family = "ArialMT")
+ggsave("/path/to/figure/extrapolation_2_convexhull_percentage_worldmap.pdf", family = "ArialMT")
 saveRDS(results_df, "/path/to/data/extrapolation_2_convexhull_percentage_worldmap_mapdata.rds")

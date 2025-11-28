@@ -1,6 +1,5 @@
-# Read the abundance data and MAG metadata
-MAG_abun <- read.csv("/path/to/data/MAG/all_bins_tpm.csv", row.names = 1)
-data_s <- read.csv("/path/to/data/MAG/MAG_bigtable_w_Clusters.csv", row.names = 1)
+MAG_abun <- read.csv("/path/to/data/source_data_1.csv", row.names = 1)
+data_s <- read.csv("/path/to/data/source_data_2.csv", row.names = 1)
 
 # Extract MAG names based on cluster (CR) type
 MAG_names_A <- rownames(data_s %>% filter(CR == "Class A"))
@@ -60,7 +59,7 @@ p <- ggplot(data.frame(y = y_values), aes(x = y)) +
     axis.title = element_text(size = 12),
     axis.text = element_text(size = 10)
   )
-ggsave(p, filename = "/path/to/project/figures/Distribution_density_logxplus1.pdf")
+ggsave(p, filename = "/path/to/figure/distribution_density_logxplus1.pdf")
 
 # Perform KS test on original sum values for normality
 ks.test(sum_values, "pnorm", mean = mean(sum_values), sd = sd(sum_values))
@@ -94,16 +93,16 @@ p2 <- ggplot(data.frame(y = sum_values), aes(x = y)) +
     axis.title = element_text(size = 12),
     axis.text = element_text(size = 10)
   )
-ggsave(p2, filename = "/path/to/project/figures/Distribution_density_x.pdf")
+ggsave(p2, filename = "/path/to/figure/distribution_density_x.pdf")
 
 # Create Q-Q plot for log-transformed data
-pdf("/path/to/project/figures/QQplot_logxplus1.pdf", width = 6, height = 6)
+pdf("/path/to/figure/res_figure_3.pdf", width = 6, height = 6)
 qqnorm(y_values)
 qqline(y_values, col = "red")
 dev.off()
 
 # Create Q-Q plot for original sum values
-pdf("/path/to/project/figures/QQplot_x.pdf", width = 6, height = 6)
+pdf("/path/to/figure/res_figure_4.pdf", width = 6, height = 6)
 qqnorm(sum_values)
 qqline(sum_values, col = "red")
 dev.off()
@@ -154,8 +153,6 @@ results <- data.frame(
   Davies_Bouldin_Score = davies_bouldin_scores,
   Calinski_Harabasz_Score = calinski_harabasz_scores
 )
-results
-results %>% write.csv("/path/to/project/figures/best_kmeans_value_three_scores.csv", row.names = FALSE)
 
 # Step 2: Plot silhouette, Davies-Bouldin, and Calinski-Harabasz scores
 library(patchwork)
@@ -211,7 +208,7 @@ combined_plot
 
 # Save the combined plot to a PDF file
 ggsave(combined_plot,
-  filename = "/path/to/project/figures/best_kmeans_value_three_scores.pdf",
+  filename = "/path/to/figure/best_kmeans_value_three_scores.pdf",
   family = "ArialMT", height = 4, width = 12
 )
 
@@ -259,7 +256,7 @@ p_tsne <- ggplot(tsne_df, aes(x = x, y = y, color = cluster)) +
   theme_minimal()
 
 # Save the t-SNE plot to a PDF file
-ggsave(p_tsne, filename = "/path/to/project/figures/kmeans_tsne_graph.pdf", width = 6, height = 6)
+ggsave(p_tsne, filename = "/path/to/figure/kmeans_tsne_graph.pdf", width = 6, height = 6)
 
 # Step 5: Create a function to predict the cluster of new data points
 predict_kmeans <- function(new_data, centers) {
@@ -281,4 +278,4 @@ predicted_clusters <- predict_kmeans(new_data_matrix, kmeans_result$centers)
 data.frame(pred = predicted_clusters, obs = kmeans_result$cluster)
 
 # Save the final data with cluster information to a CSV file
-MAG_abun_A %>% write.csv("/path/to/project/figures/ML/models_y_1_original.csv")
+MAG_abun_A %>% write.csv("/path/to/figure/ML/models_y_1_original.csv")

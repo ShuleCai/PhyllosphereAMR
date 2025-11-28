@@ -2,8 +2,8 @@
 #                Agricultural                    #
 ##################################################################
 # Read the target variable (Enterobacteriaceae) and explanatory variables for agricultural samples
-data_y_table <- read.csv("/path/to/data/16S/ML/agri_models_y_1_original.csv") %>% dplyr::select(-lon, -lat)
-data_x_origin <- read.csv("/path/to/data/16S/ML/agri_models_x_1_original.csv") %>%
+data_y_table <- read.csv("/path/to/data/agri_models_y_1_original.csv") %>% dplyr::select(-lon, -lat)
+data_x_origin <- read.csv("/path/to/data/agri_models_x_1_original.csv") %>%
   tibble::column_to_rownames("sample") %>%
   dplyr::select(-lon, -lat, -Bio_199_Koppen)
 
@@ -33,7 +33,7 @@ for (i in 1:ncol(data_x_origin)) {
 data.frame(p = p_values, r = r_values) %>% arrange(p)
 
 # Save the correlation results to a CSV file
-data.frame(p = p_values, r = r_values) %>% write.csv("/path/to/data/16S/ML/agri_feature_selection_1_var_cor.csv")
+data.frame(p = p_values, r = r_values) %>% write.csv("/path/to/data/agri_feature_selection_1_var_cor.csv")
 
 # Set significance level for feature selection
 sig_level <- 0.05 # Significance level for p-value
@@ -80,15 +80,15 @@ data_x_selected_2 <- data_x_selected_1[selected_features %>% setdiff(delete_cols
 setdiff(names(data_x_selected_1), names(data_x_selected_2))
 
 # Save the mRMR data object and the selected feature dataset
-saveRDS(mrmr.data, "/path/to/data/16S/ML/agri_feature_selection_2_mrmr.rds")
-write.csv(data_x_selected_2, "/path/to/data/16S/ML/agri_models_x_2_feature_selected.csv", row.names = F)
+saveRDS(mrmr.data, "/path/to/data/agri_feature_selection_2_mrmr.rds")
+write.csv(data_x_selected_2, "/path/to/data/agri_models_x_2_feature_selected.csv", row.names = F)
 
 ##################################################################
 #                Non-Agricultural                    #
 ##################################################################
 # Read the target variable (Enterobacteriaceae) and explanatory variables for non-agricultural samples
-data_y_table <- read.csv("/path/to/data/16S/ML/nonagri_models_y_1_original.csv") %>% dplyr::select(-lon, -lat)
-data_x_origin <- read.csv("/path/to/data/16S/ML/nonagri_models_x_1_original.csv") %>%
+data_y_table <- read.csv("/path/to/data/nonagri_models_y_1_original.csv") %>% dplyr::select(-lon, -lat)
+data_x_origin <- read.csv("/path/to/data/nonagri_models_x_1_original.csv") %>%
   tibble::column_to_rownames("sample") %>%
   dplyr::select(-lon, -lat, -Bio_199_Koppen)
 
@@ -118,7 +118,7 @@ for (i in 1:ncol(data_x_origin)) {
 data.frame(p = p_values, r = r_values) %>% arrange(p)
 
 # Save the correlation results to a CSV file
-data.frame(p = p_values, r = r_values) %>% write.csv("/path/to/data/16S/ML/nonagri_feature_selection_1_var_cor.csv")
+data.frame(p = p_values, r = r_values) %>% write.csv("/path/to/data/nonagri_feature_selection_1_var_cor.csv")
 
 # Set significance level for feature selection
 sig_level <- 0.05 # Significance level for p-value
@@ -164,5 +164,5 @@ data_x_selected_2 <- data_x_selected_1[selected_features]
 setdiff(names(data_x_selected_1), names(data_x_selected_2))
 
 # Save the mRMR data object and the selected feature dataset
-saveRDS(mrmr.data, "/path/to/data/16S/ML/nonagri_feature_selection_2_mrmr.rds")
-write.csv(data_x_selected_2, "/path/to/data/16S/ML/nonagri_models_x_2_feature_selected.csv", row.names = F)
+saveRDS(mrmr.data, "/path/to/data/nonagri_feature_selection_2_mrmr.rds")
+write.csv(data_x_selected_2, "/path/to/data/nonagri_models_x_2_feature_selected.csv", row.names = F)

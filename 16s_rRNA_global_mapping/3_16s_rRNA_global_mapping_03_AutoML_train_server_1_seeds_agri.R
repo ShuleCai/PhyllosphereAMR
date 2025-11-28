@@ -2,7 +2,6 @@ library(h2o)
 
 # Initialize H2O cluster with specified number of threads and memory size
 h2o.init(nthreads = 10, max_mem_size = "80G")
-# h2o.shutdown()  # Uncomment to shut down the H2O cluster after processing
 
 # Read the feature matrix X and target variable y
 X <- read.csv("/path/to/data/agri_models_x_2_feature_selected.csv") # Feature matrix
@@ -37,19 +36,18 @@ for (seed in 1:50) {
     include_algos = c("DRF", "XGBOOST", "GBM"), # Algorithms to include in AutoML (Decision Trees, XGBoost, and Gradient Boosting)
     verbosity = "info", # Verbosity level of the output logs
     nfolds = 5, # 5-fold cross-validation
-    # export_checkpoints_dir = "/path/to/data/MAG/figures/ML/AutoML_agri/AutoML_checkpoints"  # Uncomment if you want to export checkpoints
   )
 
   # Save the trained AutoML model results to a file
-  saveRDS(aml, paste0("./seeds/automl_res_seed", seed, ".rds"))
+  saveRDS(aml, paste0("/path/to/figure/automl_res_seed", seed, ".rds"))
 
   # Plot SHAP summary plot for feature importance
-  png(paste0("./seeds/automl_res_seed", seed, "_shap.png"), family = "ArialMT")
+  png(paste0("/path/to/figure/automl_res_seed", seed, "_shap.png"), family = "ArialMT")
   h2o.shap_summary_plot(aml@leader, newdata = test)
   dev.off()
 
   # Plot variable importance for the best model
-  pdf(paste0("./seeds/automl_res_seed", seed, "_imp.pdf"), family = "ArialMT")
+  pdf(paste0("/path/to/figure/automl_res_seed", seed, "_imp.pdf"), family = "ArialMT")
   h2o.varimp_plot(aml@leader)
   dev.off()
 }

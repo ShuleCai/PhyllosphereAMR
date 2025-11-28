@@ -114,7 +114,7 @@ perf_all <- rbind(perf_lb_gbm, perf_lb_drf, perf_lb_glm, perf_lb_xgb) %>%
   dplyr::select(-predict_time_per_row_ms, -predict_per_row)
 
 # Write performance data to CSV
-perf_all %>% write.csv("./ML/final/agri_1_model_radar_performance.csv")
+perf_all %>% write.csv("/path/to/data/final/agri_1_model_radar_performance.csv")
 
 # Inverse certain metrics (except r2)
 reverse_cols <- c("rmse", "mse", "mae", "rmsle", "mean_residual_deviance", "training_time_ms", "predict_per_row_ms", "r2_cv_sd")
@@ -145,7 +145,7 @@ library(extrafont)
 
 colors <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A") %>% rev()
 
-pdf("./ML/final/agri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
+pdf("/path/to/figure/agri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
 radarchart(
   radar_data %>% dplyr::select(-model, -mean_residual_deviance, -mse, -r2) %>%
     rename(
@@ -180,15 +180,15 @@ legend(
 dev.off()
 
 # Save radar chart data
-radar_data %>% write.csv("./ML/final/agri_1_model_radar.csv")
+radar_data %>% write.csv("/path/to/figure/agri_1_model_radar.csv")
 
 # Save leaderboard excluding specific models
 lb %>%
   filter(model_id != c("XGBoost_grid_1_AutoML_192_20250605_154624_model_865", "XGBoost_grid_1_AutoML_192_20250605_154624_model_1694")) %>%
-  write.csv("./ML/final/agri_1_model_leaderboard.csv")
+  write.csv("/path/to/figure/agri_1_model_leaderboard.csv")
 
 # Step 1: Extract original model parameters
-# Assuming `aml` is the AutoML object containing the leader model
+
 original_model <- lb_gbm # Use GBM as the example model, can be replaced with any other model
 original_params <- original_model@params$actual
 
@@ -274,22 +274,22 @@ ggplot(df_top10, aes(x = scaled_importance, y = variable)) + # Swap x and y mapp
   ) +
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
-    axis.text.y = element_text(size = 12, color = "black"), # Improve y-axis readability
+    axis.text.y = element_text(size = 12, color = "black"),
     axis.text.x = element_text(size = 10),
-    panel.grid.major.y = element_blank(), # Remove horizontal grid lines
+    panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank()
   ) +
   scale_x_continuous(expand = c(0, 0)) + # Start importance axis from 0
   geom_vline(xintercept = 0, linetype = "dashed") # Add a baseline at 0
-ggsave(filename = "./ML/final/agri_2_feature_impr_100repeat.pdf", height = 5, width = 6)
+ggsave(filename = "/path/to/figure/agri_2_feature_impr_100repeat.pdf", height = 5, width = 6)
 
 # Save the feature importance data to CSV
 df %>%
   data.frame() %>%
-  write.csv("./ML/final/agri_2_feature_impr_100repeat.csv", row.names = FALSE)
+  write.csv("/path/to/figure/agri_2_feature_impr_100repeat.csv", row.names = FALSE)
 df_top10 %>%
   as.data.frame() %>%
-  write.csv("./ML/final/agri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)
+  write.csv("/path/to/figure/agri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)
 
 # Step 5: Calculate relative importance and plot with color gradients
 df_m <- df %>% mutate(relative_importance = 100 * (df %>% group_by(seed) %>% summarise(relative_importance = scaled_importance / sum(scaled_importance)))[, 2] %>% pull())
@@ -341,7 +341,7 @@ ggplot(df_top10_mean, aes(x = relative_importance, y = variable)) +
     panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank()
   )
-ggsave(filename = "./ML/final/agri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
+ggsave(filename = "/path/to/figure/agri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
 
 # Save the final top 10 feature data
-df_top10_mean %>% write.csv("./ML/final/agri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)
+df_top10_mean %>% write.csv("/path/to/figure/agri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)

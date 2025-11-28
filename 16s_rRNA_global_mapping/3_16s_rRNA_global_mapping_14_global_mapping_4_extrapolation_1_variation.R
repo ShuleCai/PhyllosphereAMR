@@ -7,17 +7,17 @@ library(viridis)
 library(purrr)
 
 # Load final prediction results (combined from different runs)
-predictions_all <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run_all.rds")
+predictions_all <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run_all.rds")
 
 # Merge all prediction files into a single dataframe (arranging by MAE)
-predictions_1k2k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run1k_2k_ranks.rds")
-predictions_3k4k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run3k_4k_ranks.rds")
-predictions_5k6k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run5k_6k_ranks.rds")
-predictions_6k7k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run6k_7k_ranks.rds")
-predictions_7k8k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run7k_8k_ranks.rds")
-predictions_8k9k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run8k_9k_ranks.rds")
-predictions_9k10k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run9k_10k_ranks.rds")
-predictions_10k11k <- readRDS("/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run10k_11k_ranks.rds")
+predictions_1k2k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run1k_2k_ranks.rds")
+predictions_3k4k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run3k_4k_ranks.rds")
+predictions_5k6k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run5k_6k_ranks.rds")
+predictions_6k7k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run6k_7k_ranks.rds")
+predictions_7k8k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run7k_8k_ranks.rds")
+predictions_8k9k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run8k_9k_ranks.rds")
+predictions_9k10k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run9k_10k_ranks.rds")
+predictions_10k11k <- readRDS("/path/to/data/Final_1_risk_abun_pred_mean_sd_run10k_11k_ranks.rds")
 
 # Combine predictions and arrange them by MAE
 predictions_all <- rbind(
@@ -33,7 +33,7 @@ predictions_all <- rbind(
   arrange(mae)
 
 # Save the combined predictions for future use
-saveRDS(predictions_all, "/home/data/t010622/namespace/phyllo/16S/ML/final/Final_1_risk_abun_pred_mean_sd_run_all.rds")
+saveRDS(predictions_all, "/path/to/data/Final_1_risk_abun_pred_mean_sd_run_all.rds")
 
 # 1. Compute robust statistics (mean, median, SD, IQR, MAD) for each pixel
 final_result_used <- combined_predictions %>%
@@ -73,7 +73,7 @@ ggplot() +
     plot.title = element_text(hjust = 0.5, size = 12)
   )
 
-ggsave("/home/data/t010622/namespace/phyllo/16S/ML/final/extrapolation_0_coefficient_variation_worldmap.pdf", family = "ArialMT")
+ggsave("/path/to/figure/extrapolation_0_coefficient_variation_worldmap.pdf", family = "ArialMT")
 
 # 3. Bin coefficient variation values into specific ranges
 breaks_vector <- c(0, seq(20, 100, by = 10))
@@ -111,7 +111,7 @@ ggplot(result, aes(x = range_bin, y = percentage)) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
   coord_flip()
 
-ggsave("/home/data/t010622/namespace/phyllo/16S/ML/final/extrapolation_0_coefficient_variation_boxplot.pdf", family = "ArialMT", width = 5, height = 6)
+ggsave("/path/to/figure/extrapolation_0_coefficient_variation_boxplot.pdf", family = "ArialMT", width = 5, height = 6)
 
 # Save the results of the binning
-write.csv(result, "/home/data/t010622/namespace/phyllo/16S/ML/final/extrapolation_0_coefficient_variation_boxplot.csv", row.names = F)
+write.csv(result, "/path/to/data/extrapolation_0_coefficient_variation_boxplot.csv", row.names = F)

@@ -1,6 +1,6 @@
 # Read the metadata and MAG abundance data
 metadata_df <- read.csv("/path/to/data/Metadata_phyllosphere.csv")
-MAG_abun_A <- read.csv("./path/to/project/MAG/figures/ML/models_y_1_original.csv", row.names = 1)
+MAG_abun_A <- read.csv("/path/to/data/models_y_1_original.csv", row.names = 1)
 
 # Join metadata with MAG abundance and log-transformed sum values
 metadata_risk <- metadata_df %>% left_join(data.frame(
@@ -129,5 +129,5 @@ res_extract_imputed <- res_extract %>%
 all(!is.na(res_extract_imputed$Bio_199_Koppen))
 
 # Write the imputed data to a CSV file
-res_extract_imputed %>% write.csv("./path/to/project/ML/models_x_1_original.csv", row.names = FALSE)
-metadata_risk %>% write.csv("./path/to/project/ML/models_y_1_original.csv", row.names = FALSE)
+res_extract_imputed %>% write.csv("/path/to/data/models_x_1_original.csv", row.names = FALSE)
+metadata_risk %>% write.csv("/path/to/data/models_y_1_original.csv", row.names = FALSE)

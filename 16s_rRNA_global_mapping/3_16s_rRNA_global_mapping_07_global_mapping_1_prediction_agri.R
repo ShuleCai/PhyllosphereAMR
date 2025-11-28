@@ -2,7 +2,6 @@ library(h2o)
 
 # Initialize the H2O cluster with specified number of threads and memory size
 h2o.init(nthreads = 5, max_mem_size = "80G")
-# h2o.shutdown()  # Uncomment to shut down the H2O cluster after processing
 
 # Load the AutoML model from a previously saved RDS file
 aml <- readRDS("/path/to/data/AutoML_agri/optimal_iqr/automl_res_seed28_MAE_iqr.rds")
@@ -103,22 +102,13 @@ perf_lb_xgb <- lb %>%
     predict_per_row = as.numeric((end_time - start_time) / nrow(tt))
   )
 
-## Stacked Ensemble Model (commented out) ##
-# lb_ensem <- h2o.get_best_model(aml, algorithm = "StackedEnsemble", criterion = metric)
-# start_time <- Sys.time()
-# predict(lb_ensem, tt)
-# end_time <- Sys.time()
-# perf_lb_ensem <- lb %>% filter(model_id == lb_ensem@model_id) %>% mutate(r2 = h2o.r2(h2o.performance(lb_ensem, newdata = train)),
-#                                                                          r2_cv_sd = lb_ensem@model$cross_validation_metrics_summary$sd[7],
-#                                                                          predict_per_row = as.numeric((end_time - start_time) / nrow(tt)))
-
 # Combine all performance data into one data frame
 perf_all <- rbind(perf_lb_gbm, perf_lb_drf, perf_lb_glm, perf_lb_xgb) %>%
   mutate(predict_per_row_ms = 1000 * predict_per_row) %>%
   dplyr::select(-predict_time_per_row_ms, -predict_per_row)
 
 # Save the performance metrics to CSV
-perf_all %>% write.csv("/path/to/data/final/agri_1_model_radar_performance.csv")
+perf_all %>% write.csv("/path/to/data/agri_1_model_radar_performance.csv")
 
 # Step 1: Reverse the values (except for R-squared)
 reverse_cols <- c("rmse", "mse", "mae", "rmsle", "mean_residual_deviance", "training_time_ms", "predict_per_row_ms", "r2_cv_sd")
@@ -148,7 +138,7 @@ radar_data <- rbind(
 colors <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A") %>% rev()
 library(fmsb)
 library(extrafont)
-pdf("/path/to/data/final/agri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
+pdf("/path/to/data/agri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
 radarchart(
   radar_data %>% dplyr::select(-model, -mean_residual_deviance, -mse, -r2) %>%
     rename(
@@ -183,11 +173,11 @@ legend(
 dev.off()
 
 # Save the radar chart data to a CSV file
-radar_data %>% write.csv("/path/to/data/final/agri_1_model_radar.csv")
+radar_data %>% write.csv("/path/to/data/agri_1_model_radar.csv")
 
 # Save the leaderboard from the 12th model to a CSV file
 lb[12:nrow(lb), ] %>%
-  write.csv("/path/to/data/final/agri_1_model_leaderload.csv")
+  write.csv("/path/to/data/agri_1_model_leaderload.csv")
 
 # Step 1: Extract original model parameters
 # Assuming `aml` is a trained AutoML object or `lb_gbm` is a trained model
@@ -281,12 +271,12 @@ ggplot(df_top10, aes(x = scaled_importance, y = variable)) +
   )
 
 # Save the boxplot to a PDF
-ggsave(filename = "/path/to/data/final/agri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
+ggsave(filename = "/path/to/data/agri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
 
 # Save the data for the boxplot to a CSV
 df_top10 %>%
   as.data.frame() %>%
-  write.csv("/path/to/data/final/agri_2_feature_impr_100repeat_top10feature.csv", row.names = F)
+  write.csv("/path/to/data/agri_2_feature_impr_100repeat_top10feature.csv", row.names = F)
 
 # Step 5: Calculate the relative importance of each feature across seeds
 df_m <- df %>% mutate(relative_importance = 100 * (df %>% group_by(seed) %>%

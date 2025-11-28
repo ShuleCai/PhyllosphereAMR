@@ -1,8 +1,8 @@
 ###### Extrapolation - Range of bands - Combined ######
 # 1. Combine prediction data and feature data
-training_agri <- read.csv("/home/data/t010622/namespace/phyllo/16S/ML/agri_models_x_2_feature_selected_iqr.csv")
-training_nonagri <- read.csv("/home/data/t010622/namespace/phyllo/16S/ML/nonagri_models_x_2_feature_selected_iqr.csv")
-res_extract_imputed <- read.csv("/home/data/t010622/namespace/phyllo/16S/ML/models_x_1_original.csv")
+training_agri <- read.csv("/path/to/data/agri_models_x_2_feature_selected_iqr.csv")
+training_nonagri <- read.csv("/path/to/data/nonagri_models_x_2_feature_selected_iqr.csv")
+res_extract_imputed <- read.csv("/path/to/data/models_x_1_original.csv")
 res_bands <- res_extract_imputed %>% dplyr::select(union(names(training_agri), names(training_nonagri)))
 
 # 2. Stack raster data for combined bands
@@ -69,8 +69,8 @@ ggplot(result, aes(x = range_bin, y = percentage)) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
   coord_flip()
 
-ggsave("~/namespace/phyllo/16S/ML/final/extrapolation_1_bands_percentage_boxplot.pdf", family = "ArialMT", width = 5, height = 6)
-write.csv(result, "~/namespace/phyllo/16S/ML/final/extrapolation_1_bands_percentage_boxplot.csv", row.names = F)
+ggsave("/path/to/figure/extrapolation_1_bands_percentage_boxplot.pdf", family = "ArialMT", width = 5, height = 6)
+write.csv(result, "/path/to/data/extrapolation_1_bands_percentage_boxplot.csv", row.names = F)
 
 # 11. Create a map of the percentage of bands within the valid range
 mapdata_bands <- data.frame(x = preddf_combined_f$x, y = preddf_combined_f$y, in_range_pct = pixel_percent_in_range)
@@ -97,5 +97,5 @@ ggplot() +
     plot.title = element_text(hjust = 0.5, size = 12)
   )
 
-ggsave("~/namespace/phyllo/16S/ML/final/extrapolation_1_bands_percentage_worldmap.pdf", family = "ArialMT")
-saveRDS(mapdata_bands, "~/namespace/phyllo/16S/ML/final/extrapolation_1_bands_percentage_worldmap_mapdata.rds")
+ggsave("/path/to/figure/extrapolation_1_bands_percentage_worldmap.pdf", family = "ArialMT")
+saveRDS(mapdata_bands, "/path/to/data/extrapolation_1_bands_percentage_worldmap_mapdata.rds")

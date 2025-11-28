@@ -1,15 +1,14 @@
-# Load required libraries
-library(tidyverse) # Data manipulation and visualization
-library(FactoMineR) # Principal Component Analysis (PCA)
-library(geometry) # Geometry functions for convex hulls
-library(sf) # Simple Features for spatial data
+library(tidyverse)
+library(FactoMineR)
+library(geometry)
+library(sf)
 
 # Load training datasets for agricultural and non-agricultural data
-training_agri <- read.csv("/path/to/project/agri_models_x_2_feature_selected_iqr.csv")
-training_nonagri <- read.csv("/path/to/project/nonagri_models_x_2_feature_selected_iqr.csv")
+training_agri <- read.csv("/path/to/data/agri_models_x_2_feature_selected_iqr.csv")
+training_nonagri <- read.csv("/path/to/data/nonagri_models_x_2_feature_selected_iqr.csv")
 
 # Load the imputed feature data
-res_extract_imputed <- read.csv("/path/to/project/models_x_1_original.csv")
+res_extract_imputed <- read.csv("/path/to/data/models_x_1_original.csv")
 
 # Combine selected feature names from agricultural and non-agricultural datasets
 res_bands <- res_extract_imputed %>% dplyr::select(union(names(training_agri), c()))
@@ -121,8 +120,8 @@ ggplot(result_counts, aes(x = range_bin, y = percentage)) +
   ) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
   coord_flip() # Display the plot horizontally
-ggsave("/path/to/project/extrapolation_2_convexhull_percentage_boxplot.pdf", family = "ArialMT", width = 5, height = 6)
-write.csv(result_counts, "/path/to/project/extrapolation_2_convexhull_percentage_boxplot.csv", row.names = F)
+ggsave("/path/to/figure/extrapolation_2_convexhull_percentage_boxplot.pdf", family = "ArialMT", width = 5, height = 6)
+write.csv(result_counts, "/path/to/data/extrapolation_2_convexhull_percentage_boxplot.csv", row.names = F)
 
 # 12. Generate a world map showing the percentage of convex hull coverage
 ggplot() +
@@ -156,5 +155,5 @@ ggplot() +
     plot.margin = margin(10, 10, 10, 10)
   ) +
   labs(title = paste0("Proportion of PC pairs covered by convex hulls (", k, " PCs, ", num_pairs, " pairs)"))
-ggsave("/path/to/project/extrapolation_2_convexhull_percentage_worldmap.pdf", family = "ArialMT")
-saveRDS(results_df, "/path/to/project/extrapolation_2_convexhull_percentage_worldmap_mapdata.rds")
+ggsave("/path/to/figure/extrapolation_2_convexhull_percentage_worldmap.pdf", family = "ArialMT")
+saveRDS(results_df, "/path/to/data/extrapolation_2_convexhull_percentage_worldmap_mapdata.rds")

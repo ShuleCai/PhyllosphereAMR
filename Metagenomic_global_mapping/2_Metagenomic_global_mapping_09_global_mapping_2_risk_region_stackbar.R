@@ -170,7 +170,7 @@ final_plot <- plot_grid(
 )
 
 # Output the final plot to a PDF file
-pdf("/path/to/project/final/Final_3_global_mapping_risk_continents_prop_boxplot.pdf",
+pdf("/path/to/data/Final_3_global_mapping_risk_continents_prop_boxplot.pdf",
   family = "ArialMT",
   width = 14, height = 3.2
 )

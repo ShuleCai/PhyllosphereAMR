@@ -1,6 +1,5 @@
-# Load necessary packages
-library(h2o) # H2O library for machine learning models
-library(dplyr) # Data manipulation package
+library(h2o)
+library(dplyr)
 
 # Initialize H2O with multiple threads and memory allocation
 h2o.init(nthreads = 5, max_mem_size = "80G", port = 54321)

@@ -1,5 +1,5 @@
 # Read 16S metadata including latitude and longitude from the dataset
-metadata_df_16S_latlon <- read.csv("/path/to/data/16S/ML/p8_16s_ML_source_data.csv") %>%
+metadata_df_16S_latlon <- read.csv("/path/to/data//p8_16s_ML_source_data.csv") %>%
   rename(lon = longitude, lat = latitude)
 
 # Transform and log-transform Enterobacteriaceae abundance data in multiple ways for skewness and normality tests
@@ -35,8 +35,7 @@ ggplot(data.frame(y = y_values), aes(x = y)) +
 # Load raster data and handle spatial data with sf and terra packages
 library(raster)
 
-# tif_stack <- readRDS("/path/to/data/GIS_rasters/tif_stack_data_197all.rds")  # Raster data stack
-tif_stack
+tif_stack <- readRDS("/path/to/data/tif_stack_data_197all.rds") # Raster data stack
 nlayers(tif_stack) # Check number of layers in the raster stack
 
 # Assign geographic coordinates to the metadata (latitude and longitude)
@@ -110,9 +109,9 @@ all(!is.na(res_extract_imputed_16S$Bio_199_Koppen))
 res_extract_imputed_16S %>%
   dplyr::mutate(Enterobacteriaceae = 100 * Enterobacteriaceae) %>%
   dplyr::select(Enterobacteriaceae) %>%
-  write.csv("/path/to/data/16S/ML/models_y.csv", row.names = F)
+  write.csv("/path/to/data/models_y.csv", row.names = F)
 res_extract_imputed_16S[, 22:151] %>%
-  write.csv("/path/to/data/16S/ML/models_x_1_original.csv", row.names = F)
+  write.csv("/path/to/data/models_x_1_original.csv", row.names = F)
 
 # Separate agricultural and non-agricultural samples and export results
 sample_names_agricultural <- (metadata_df_16S_latlon %>% filter(Agricultural == "Agricultural"))$sample
@@ -122,23 +121,23 @@ res_extract_imputed_16S_agri <- res_extract_imputed_16S %>% filter(Agricultural 
 res_extract_imputed_16S_agri %>%
   dplyr::mutate(Enterobacteriaceae = 100 * Enterobacteriaceae) %>%
   dplyr::select(sample, lon, lat, Enterobacteriaceae) %>%
-  write.csv("/path/to/data/16S/ML/agri_models_y.csv", row.names = F)
+  write.csv("/path/to/data/agri_models_y.csv", row.names = F)
 res_extract_imputed_16S_agri[, c(1, 3, 4, 22:151)] %>%
-  write.csv("/path/to/data/16S/ML/agri_models_x_1_original.csv", row.names = F)
+  write.csv("/path/to/data/agri_models_x_1_original.csv", row.names = F)
 
 # Repeat for non-agricultural samples
 res_extract_imputed_16S_nona <- res_extract_imputed_16S %>% filter(Agricultural == "Non-agricultural")
 res_extract_imputed_16S_nona %>%
   dplyr::mutate(Enterobacteriaceae = 100 * Enterobacteriaceae) %>%
   dplyr::select(sample, lon, lat, Enterobacteriaceae) %>%
-  write.csv("/path/to/data/16S/ML/nonagri_models_y.csv", row.names = F)
+  write.csv("/path/to/data/nonagri_models_y.csv", row.names = F)
 res_extract_imputed_16S_nona[, c(1, 3, 4, 22:151)] %>%
-  write.csv("/path/to/data/16S/ML/nonagri_models_x_1_original.csv", row.names = F)
+  write.csv("/path/to/data/nonagri_models_x_1_original.csv", row.names = F)
 
 # Handle outliers with IQR and Z-score methods, and export results for both
 
 # Read the imputed dataset and integrate it with the Agricultural classification data
-res_extract_imputed_16S <- read.csv("/path/to/data/16S/ML/models_x_1_original.csv") %>%
+res_extract_imputed_16S <- read.csv("/path/to/data/models_x_1_original.csv") %>%
   mutate(Agricultural = metadata_df_16S_latlon$Agricultural, Enterobacteriaceae = 100 * metadata_df_16S_latlon$Enterobacteriaceae)
 
 # Separate the dataset into agricultural and non-agricultural samples
@@ -193,10 +192,10 @@ nrow(agri_zscore) / nrow(agri_data) # Proportion of rows kept after Z-score filt
 nrow(agri_iqr) / nrow(agri_data) # Proportion of rows kept after IQR-based filtering
 
 # Export the results for agricultural samples after outlier processing
-write.csv(agri_iqr_y, "/path/to/data/16S/ML/agri_models_y_iqr.csv", row.names = F)
-write.csv(agri_iqr_x, "/path/to/data/16S/ML/agri_models_x_iqr.csv", row.names = F)
-write.csv(agri_zscore_y, "/path/to/data/16S/ML/agri_models_y_zscore.csv", row.names = F)
-write.csv(agri_zscore_x, "/path/to/data/16S/ML/agri_models_x_zscore.csv", row.names = F)
+write.csv(agri_iqr_y, "/path/to/data/agri_models_y_iqr.csv", row.names = F)
+write.csv(agri_iqr_x, "/path/to/data/agri_models_x_iqr.csv", row.names = F)
+write.csv(agri_zscore_y, "/path/to/data/agri_models_y_zscore.csv", row.names = F)
+write.csv(agri_zscore_x, "/path/to/data/agri_models_x_zscore.csv", row.names = F)
 
 # Process non-agricultural samples using the same outlier removal methods
 nona_data <- res_extract_imputed_16S_nona %>%
@@ -213,10 +212,10 @@ nona_zscore_y <- nona_zscore %>% dplyr::select(sample, lon, lat, Enterobacteriac
 nona_zscore_x <- nona_zscore[, c(1, 3, 4, 22:151)] # Explanatory variables after Z-score filtering
 
 # Export the results for non-agricultural samples after outlier processing
-write.csv(nona_iqr_y, "/path/to/data/16S/ML/nonagri_models_y_iqr.csv", row.names = F)
-write.csv(nona_iqr_x, "/path/to/data/16S/ML/nonagri_models_x_iqr.csv", row.names = F)
-write.csv(nona_zscore_y, "/path/to/data/16S/ML/nonagri_models_y_zscore.csv", row.names = F)
-write.csv(nona_zscore_x, "/path/to/data/16S/ML/nonagri_models_x_zscore.csv", row.names = F)
+write.csv(nona_iqr_y, "/path/to/data/nonagri_models_y_iqr.csv", row.names = F)
+write.csv(nona_iqr_x, "/path/to/data/nonagri_models_x_iqr.csv", row.names = F)
+write.csv(nona_zscore_y, "/path/to/data/nonagri_models_y_zscore.csv", row.names = F)
+write.csv(nona_zscore_x, "/path/to/data/nonagri_models_x_zscore.csv", row.names = F)
 
 # Output the statistics on outlier removal for both agricultural and non-agricultural samples
 cat("Agricultural sample outlier statistics:\n")

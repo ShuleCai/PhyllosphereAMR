@@ -12,8 +12,7 @@ silhouette_scores <- numeric(n_k) # Silhouette scores
 davies_bouldin_scores <- numeric(n_k) # Davies-Bouldin index
 calinski_harabasz_scores <- numeric(n_k) # Calinski-Harabasz index
 
-# Read the final results from a CSV file (mean predictions and standard deviations)
-final_result <- read.csv("/path/to/data/final/Final_1_risk_abun_pred_mean_sd.csv", row.names = 1)
+final_result <- read.csv("/path/to/data/Final_1_risk_abun_pred_mean_sd.csv", row.names = 1)
 
 # Extract the predicted values for clustering
 y_values <- final_result$mean_predict
@@ -109,9 +108,6 @@ results <- data.frame(
   calinski_harabasz = calinski_harabasz_scores
 )
 
-# Print the results
-print(results)
-
 # Plot the Elbow method (WSS vs k values)
 plot(results$k, results$wss,
   type = "b", pch = 19, col = "blue",
@@ -174,11 +170,11 @@ p3 <- ggplot(results_s, aes(x = k, y = calinski_harabasz)) +
 # Use patchwork to combine the plots
 combined_plot <- p1 + p2 + plot_layout(nrow = 1)
 combined_plot
-ggsave("/path/to/project/final/Final_2_pred_risk_bestk_minibatch.pdf",
+ggsave("/path/to/data/Final_2_pred_risk_bestk_minibatch.pdf",
   family = "ArialMT",
   height = 4, width = 8
 )
-results_s %>% write.csv("/path/to/data/final/Final_2_pred_risk_bestk_minibatch.csv")
+results_s %>% write.csv("/path/to/data/Final_2_pred_risk_bestk_minibatch.csv")
 
 # Consider the best k value based on silhouette score
 best_k_silhouette <- 12
@@ -194,8 +190,8 @@ mbkm <- MiniBatchKmeans(matrix(y_values, ncol = 1),
 )
 mbkm_clusters <- predict_MBatchKMeans(matrix(y_values, ncol = 1), mbkm$centroids)
 # Save the trained model and centroids
-saveRDS(mbkm, "/path/to/project/final/Final_2_minibatch_kmeans_model_best12.rds")
-write.csv(mbkm$centroids, "/path/to/project/final/Final_2_minibatch_kmeans_model_best12_centroids.csv")
+saveRDS(mbkm, "/path/to/data/Final_2_minibatch_kmeans_model_best12.rds")
+write.csv(mbkm$centroids, "/path/to/data/Final_2_minibatch_kmeans_model_best12_centroids.csv")
 
 # Retrieve the cluster centroids and sort them in ascending order, then get the sorted indices
 centroids <- mbkm$centroids[, 1]
@@ -233,14 +229,14 @@ ggplot(tsne_df, aes(x = x, y = y, color = cluster)) +
   theme_minimal()
 
 # Save the t-SNE plot to a file
-ggsave(filename = "/path/to/project/final/Final_2_minibatch_kmeans_model_best12_tnse.pdf", width = 6, height = 6)
+ggsave(filename = "/path/to/data/Final_2_minibatch_kmeans_model_best12_tnse.pdf", width = 6, height = 6)
 
 # Add the new cluster labels to the final result dataframe
 final_result_risk <- final_result %>% mutate(Risk = new_mbkm_clusters)
 
 # Save the updated dataframe with cluster labels
 final_result_risk %>%
-  write.csv("/path/to/data/final/Final_3_world_pixel_Risk.csv")
+  write.csv("/path/to/data/Final_3_world_pixel_Risk.csv")
 
 # Load the country boundaries dataset
 library(rnaturalearth)
@@ -298,8 +294,8 @@ ggplot() +
   )
 
 # Save the risk level map to a file
-ggsave("/path/to/project/final/Final_3_global_mapping_risk.pdf", width = 10, height = 8)
-ggsave("/path/to/project/final/Final_3_global_mapping_risk.png")
+ggsave("/path/to/data/Final_3_global_mapping_risk.pdf", width = 10, height = 8)
+ggsave("/path/to/data/Final_3_global_mapping_risk.png")
 
 # Plot x, y subplot for risk distribution
 library(tidyverse)
@@ -407,7 +403,7 @@ aligned_plots <- align_plots(
 )
 
 # Combine the plots into one final plot with the map in the center, x bar plot at the bottom, and y bar plot on the right side
-pdf("/path/to/project/final/Final_3_global_mapping_risk_lonlat.pdf", family = "ArialMT")
+pdf("/path/to/data/Final_3_global_mapping_risk_lonlat.pdf", family = "ArialMT")
 ggdraw() +
   draw_plot(aligned_plots[[2]], x = 0, y = 0.1, width = 0.8, height = 0.8) + # Main map
   draw_plot(aligned_plots[[1]], x = 0, y = 0.2, width = 0.8, height = 0.1) + # x bar plot (bottom)
@@ -421,8 +417,7 @@ ggdraw() +
   )
 dev.off()
 
-# Save the final plot as a PNG image as well
-png("/path/to/project/final/Final_3_global_mapping_risk_lonlat.png", family = "ArialMT")
+png("/path/to/data/Final_3_global_mapping_risk_lonlat.png", family = "ArialMT")
 ggdraw() +
   draw_plot(aligned_plots[[2]], x = 0, y = 0.1, width = 0.8, height = 0.8) + # Main map
   draw_plot(aligned_plots[[1]], x = 0, y = 0.2, width = 0.8, height = 0.1) + # x bar plot (bottom)

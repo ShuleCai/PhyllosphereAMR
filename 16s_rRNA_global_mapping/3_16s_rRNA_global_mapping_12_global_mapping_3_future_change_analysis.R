@@ -183,7 +183,7 @@ combined_plot <- ggplot(plot_data, aes(x = scenario_label, y = 100 * mean, fill 
   ))
 
 # Save the bar chart for projected changes across continents and scenarios
-ggsave(combined_plot, filename = "/path/to/data/Future2050_change_scenarios_barchart.pdf", family = "ArialMT", width = 7, height = 4)
+ggsave(combined_plot, filename = "/path/to/figure/Future2050_change_scenarios_barchart.pdf", family = "ArialMT", width = 7, height = 4)
 
 # Export the data for further analysis or use
 plot_data %>%
@@ -261,4 +261,4 @@ ggplot(plot_data_modified, aes(x = continent, y = mean_new, fill = scenario_labe
   )
 
 # Save the rose chart (polar plot) as a PDF
-ggsave("/path/to/data/Future2050_change_scenarios_roses.pdf")
+ggsave("/path/to/figure/Future2050_change_scenarios_roses.pdf")

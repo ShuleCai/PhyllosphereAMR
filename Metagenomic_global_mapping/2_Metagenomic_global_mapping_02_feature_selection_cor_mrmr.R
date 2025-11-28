@@ -1,6 +1,6 @@
 # Read the metadata and sample data
 metadata_df <- read.csv("/path/to/data/Metadata_phyllosphere.csv")
-MAG_abun_A <- read.csv("./path/to/project/MAG/figures/ML/models_y_1_original.csv", row.names = 1)
+MAG_abun_A <- read.csv("/path/to/data/ML/models_y_1_original.csv", row.names = 1)
 
 # Split samples into Agricultural and Non-Agricultural
 sample_names_agricultural <- (bigtable %>% filter(Agricultural == "Agricultural"))$Sample
@@ -11,11 +11,11 @@ sample_names_non_agricultural <- (bigtable %>% filter(Agricultural != "Agricultu
 ##################################################################
 
 # Filter data for Agricultural samples
-data_y_table <- read.csv("./path/to/project/ML/models_y_1_original.csv") %>%
+data_y_table <- read.csv("/path/to/data/ML/models_y_1_original.csv") %>%
   filter(Sample %in% sample_names_agricultural)
 
 # Read and preprocess X data for Agricultural samples
-data_x_origin <- read.csv("./path/to/project/ML/models_x_1_original.csv", row.names = read.csv("./path/to/project/ML/models_y_1_original.csv")$Sample) %>%
+data_x_origin <- read.csv("/path/to/data/ML/models_x_1_original.csv", row.names = read.csv("/path/to/data/ML/models_y_1_original.csv")$Sample) %>%
   dplyr::select(-lon, -lat, -Bio_199_Koppen) %>%
   dplyr::filter(row.names(.) %in% sample_names_agricultural)
 
@@ -43,7 +43,7 @@ for (i in 1:ncol(data_x_origin)) {
 }
 
 # Save the correlation results to a CSV file
-data.frame(p = p_values, r = r_values) %>% write.csv("./path/to/project/ML/agri_feature_selection_1_var_cor.csv")
+data.frame(p = p_values, r = r_values) %>% write.csv("/path/to/data/ML/agri_feature_selection_1_var_cor.csv")
 
 # Sort the results by p-value
 data.frame(p = p_values, r = r_values) %>% arrange(p)
@@ -86,19 +86,19 @@ data_x_selected_2 <- data_x_selected_1[selected_features]
 setdiff(names(data_x_selected_1), names(data_x_selected_2))
 
 # Save the MRMR results and the selected features to CSV
-saveRDS(mrmr.data, "./path/to/project/ML/agri_feature_selection_2_mrmr.rds")
-write.csv(data_x_selected_2, "./path/to/project/ML/agri_models_x_2_feature_selected.csv", row.names = FALSE)
+saveRDS(mrmr.data, "/path/to/data/ML/agri_feature_selection_2_mrmr.rds")
+write.csv(data_x_selected_2, "/path/to/data/ML/agri_models_x_2_feature_selected.csv", row.names = FALSE)
 
 ##################################################################
 #                Non-Agricultural Data Processing                #
 ##################################################################
 
 # Filter data for Non-Agricultural samples
-data_y_table <- read.csv("./path/to/project/ML/models_y_1_original.csv") %>%
+data_y_table <- read.csv("/path/to/data/ML/models_y_1_original.csv") %>%
   filter(Sample %in% sample_names_non_agricultural)
 
 # Read and preprocess X data for Non-Agricultural samples
-data_x_origin <- read.csv("./path/to/project/ML/models_x_1_original.csv", row.names = read.csv("./path/to/project/ML/models_y_1_original.csv")$Sample) %>%
+data_x_origin <- read.csv("/path/to/data/ML/models_x_1_original.csv", row.names = read.csv("/path/to/data/ML/models_y_1_original.csv")$Sample) %>%
   dplyr::select(-lon, -lat, -Bio_199_Koppen) %>%
   dplyr::filter(row.names(.) %in% sample_names_non_agricultural)
 
@@ -133,7 +133,7 @@ for (i in 1:ncol(data_x_origin)) {
 }
 
 # Save the correlation results to a CSV file
-data.frame(p = p_values, r = r_values) %>% write.csv("./path/to/project/ML/nonagri_feature_selection_1_var_cor.csv")
+data.frame(p = p_values, r = r_values) %>% write.csv("/path/to/data/ML/nonagri_feature_selection_1_var_cor.csv")
 
 # Sort the results by p-value
 data.frame(p = p_values, r = r_values) %>% arrange(p)
@@ -173,5 +173,5 @@ data_x_selected_2 <- data_x_selected_1[selected_features]
 setdiff(names(data_x_selected_1), names(data_x_selected_2))
 
 # Save the MRMR results and the selected features to CSV
-saveRDS(mrmr.data, "./path/to/project/ML/nonagri_feature_selection_2_mrmr.rds")
-write.csv(data_x_selected_2, "./path/to/project/ML/nonagri_models_x_2_feature_selected.csv", row.names = FALSE)
+saveRDS(mrmr.data, "/path/to/data/nonagri_feature_selection_2_mrmr.rds")
+write.csv(data_x_selected_2, "/path/to/data/nonagri_models_x_2_feature_selected.csv", row.names = FALSE)

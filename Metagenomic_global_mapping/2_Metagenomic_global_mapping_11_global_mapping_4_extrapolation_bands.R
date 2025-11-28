@@ -87,7 +87,7 @@ ggplot(result, aes(x = range_bin, y = percentage)) +
   ) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
   coord_flip() # Display the bar chart horizontally
-ggsave("/path/to/data/extrapolation_1_bands_percentage_boxplot.pdf", family = "ArialMT")
+ggsave("/path/to/figure/extrapolation_1_bands_percentage_boxplot.pdf", family = "ArialMT")
 write.csv(result, "/path/to/data/extrapolation_1_bands_percentage_boxplot.csv", row.names = FALSE)
 
 # 7. Create a bands uncertainty map
@@ -129,5 +129,5 @@ ggplot() +
     plot.title = element_text(hjust = 0.5, size = 12)
   ) +
   labs(title = "Proportion of bands within interpolation range")
-ggsave("/path/to/data/extrapolation_1_bands_percentage_worldmap.pdf", family = "ArialMT")
+ggsave("/path/to/figure/extrapolation_1_bands_percentage_worldmap.pdf", family = "ArialMT")
 saveRDS(mapdata_bands, "/path/to/data/extrapolation_1_bands_percentage_worldmap_mapdata.rds")

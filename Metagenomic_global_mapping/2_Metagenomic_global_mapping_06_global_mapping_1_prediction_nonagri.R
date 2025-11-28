@@ -3,8 +3,7 @@ library(h2o)
 # Initialize H2O cluster with 5 threads and 80 GB of memory
 h2o.init(nthreads = 5, max_mem_size = "80G")
 
-# Load the AutoML model saved earlier
-aml <- readRDS("/path/to/data/AutoML_nonagri/optimal/automl_res_seed2_basicmodels_2000.rds")
+aml <- readRDS("/path/to/data/automl_res_seed2_basicmodels_2000.rds")
 
 # Get the leaderboard of AutoML models
 lb <- h2o.get_leaderboard(object = aml, extra_columns = "ALL") %>% as.data.frame()
@@ -109,7 +108,7 @@ perf_all <- rbind(perf_lb_gbm, perf_lb_drf, perf_lb_glm, perf_lb_xgb) %>%
   dplyr::select(-predict_time_per_row_ms, -predict_per_row)
 
 # Save performance data to CSV
-perf_all %>% write.csv("./ML/final/nonagri_1_model_radar_performance.csv")
+perf_all %>% write.csv("/path/to/data/nonagri_1_model_radar_performance.csv")
 
 # Inverse certain metrics (except r2)
 reverse_cols <- c("rmse", "mse", "mae", "rmsle", "mean_residual_deviance", "training_time_ms", "predict_per_row_ms", "r2_cv_sd")
@@ -141,7 +140,7 @@ colors <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A") %>% rev()
 library(fmsb)
 library(extrafont)
 
-pdf("./ML/final/nonagri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
+pdf("/path/to/data/nonagri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
 radarchart(
   radar_data %>% dplyr::select(-model, -mean_residual_deviance, -mse, -r2) %>%
     rename(
@@ -176,12 +175,12 @@ legend(
 dev.off()
 
 # Save radar chart data
-radar_data %>% write.csv("./ML/final/nonagri_1_model_radar.csv")
+radar_data %>% write.csv("/path/to/data/nonagri_1_model_radar.csv")
 
 # Save leaderboard excluding specific models
 lb %>%
   filter(!model_id %in% lb$model_id[1:6]) %>%
-  write.csv("./ML/final/nonagri_1_model_leaderboard.csv")
+  write.csv("/path/to/data/nonagri_1_model_leaderboard.csv")
 
 # Step 1: Extract original model parameters
 original_model <- lb_gbm # Assuming lb_gbm is the trained AutoML model
@@ -270,22 +269,22 @@ ggplot(df_top10, aes(x = scaled_importance, y = variable)) + # Swap x and y mapp
   ) +
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
-    axis.text.y = element_text(size = 12, color = "black"), # Improve y-axis readability
+    axis.text.y = element_text(size = 12, color = "black"),
     axis.text.x = element_text(size = 10),
-    panel.grid.major.y = element_blank(), # Remove horizontal grid lines
+    panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank()
   ) +
   scale_x_continuous(expand = c(0, 0)) + # Start importance axis from 0
   geom_vline(xintercept = 0, linetype = "dashed") # Add a dashed line at 0 for reference
-ggsave(filename = "./ML/final/nonagri_2_feature_impr_100repeat.pdf", height = 5, width = 6)
+ggsave(filename = "/path/to/figure/nonagri_2_feature_impr_100repeat.pdf", height = 5, width = 6)
 
 # Save the feature importance data to CSV for further analysis
 df %>%
   data.frame() %>%
-  write.csv("./ML/final/nonagri_2_feature_impr_100repeat.csv", row.names = FALSE)
+  write.csv("/path/to/data/nonagri_2_feature_impr_100repeat.csv", row.names = FALSE)
 df_top10 %>%
   as.data.frame() %>%
-  write.csv("./ML/final/nonagri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)
+  write.csv("/path/to/data/nonagri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)
 
 # Step 5: Calculate relative feature importance and plot using color gradients
 df_m <- df %>% mutate(relative_importance = 100 * (df %>% group_by(seed) %>% summarise(relative_importance = scaled_importance / sum(scaled_importance)))[, 2] %>% pull())
@@ -339,7 +338,7 @@ ggplot(df_top10_mean, aes(x = relative_importance, y = variable)) +
     panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank()
   )
-ggsave(filename = "./ML/final/nonagri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
+ggsave(filename = "/path/to/data/nonagri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
 
 # Save the final feature importance data
-df_top10_mean %>% write.csv("./ML/final/nonagri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)
+df_top10_mean %>% write.csv("/path/to/data/nonagri_2_feature_impr_100repeat_top10feature.csv", row.names = FALSE)

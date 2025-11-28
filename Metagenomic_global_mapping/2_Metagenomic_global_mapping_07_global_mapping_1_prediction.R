@@ -4,10 +4,6 @@
 library(ggplot2)
 library(raster)
 
-# Load the necessary country and river shapefiles (optional for context)
-# countries <- ne_countries(scale = "medium", returnclass = "sf")
-# rivers <- ne_download(scale = "medium", type = "rivers_lake_centerlines", category = "physical", returnclass = "sf")
-
 # Visualize the final predictions using ggplot
 ggplot() +
   geom_raster(data = final_result, aes(x = x, y = y, fill = mean_predict), na.rm = TRUE) +
@@ -37,8 +33,5 @@ ggplot() +
   labs(title = "Predicted Crop Risk Levels (Transformed Abundance)")
 
 # Save the plot as both PDF and PNG
-ggsave("/home/data/t010622/namespace/phyllo/MAG/figures/ML/final/global_mapping_risk.pdf", width = 10, height = 8)
-ggsave("/home/data/t010622/namespace/phyllo/MAG/figures/ML/final/global_mapping_risk.png", width = 10, height = 8)
-
-# Optionally save the final prediction results to CSV for reporting
-write.csv(final_result, "/home/data/t010622/namespace/phyllo/MAG/figures/ML/final/Final_1_risk_abun_pred_mean_sd.csv", row.names = FALSE)
+ggsave("/path/to/figure/global_mapping_risk.pdf", width = 10, height = 8)
+ggsave("/path/to/figure/global_mapping_risk.png", width = 10, height = 8)

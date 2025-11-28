@@ -298,9 +298,9 @@ combined_plot <- wrap_plots(
 )
 
 # Save individual plots and combined plot
-ggsave(y_density, filename = "/path/to/data/Final_1_worldmap_subplot_y.png", height = 5, width = 1, dpi = 600)
-ggsave(x_density, filename = "/path/to/data/Final_1_worldmap_subplot_x.png", height = 1, width = 6.5, dpi = 600)
-ggsave(main_map, filename = "/path/to/data/Final_1_worldmap.png", height = 7, width = 9, dpi = 600)
+ggsave(y_density, filename = "/path/to/figure/Final_1_worldmap_subplot_y.png", height = 5, width = 1, dpi = 600)
+ggsave(x_density, filename = "/path/to/figure/Final_1_worldmap_subplot_x.png", height = 1, width = 6.5, dpi = 600)
+ggsave(main_map, filename = "/path/to/figure/Final_1_worldmap.png", height = 7, width = 9, dpi = 600)
 
 # Add legend (optional)
 legend_plot <- ggplot() +
@@ -333,7 +333,7 @@ legend_plot <- ggplot() +
   ) +
   labs(fill = "Enterobacteriaceae Abundance (%)")
 
-ggsave(legend_plot, filename = "/path/to/data/Final_1_worldmap_legend.pdf", family = "ArialMT")
+ggsave(legend_plot, filename = "/path/to/figure/Final_1_worldmap_legend.pdf", family = "ArialMT")
 
 # Histogram and Density Plot
 ggplot(data = final_result, aes(x = mean_predict_2010)) +
@@ -351,7 +351,7 @@ ggplot(data = final_result, aes(x = mean_predict_2010)) +
   theme_minimal() + # Clean theme
   theme(plot.title = element_text(hjust = 0.5)) # Center the title
 
-ggsave("/path/to/data/Final_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
+ggsave("/path/to/figure/Final_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
 
 # Density plot with overlayed density curve
 ggplot(data = final_result, aes(x = mean_predict_2010)) +
@@ -380,7 +380,7 @@ ggplot(data = final_result, aes(x = mean_predict_2010)) +
     plot.title = element_text(hjust = 0.5, size = 14, face = "bold")
   )
 
-ggsave("/path/to/data/Final_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
+ggsave("/path/to/figure/Final_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
 
 # Final result density plot for abundance
 ggplot(data = final_result, aes(x = mean_predict_2010)) +
@@ -412,7 +412,7 @@ ggplot(data = final_result, aes(x = mean_predict_2010)) +
   )
 
 # Save the density plot as a PDF
-ggsave("/path/to/data/Final_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
+ggsave("/path/to/figure/Final_1_distribution_density.pdf", family = "ArialMT", width = 3.5, height = 3)
 
 # Final Map Plot with Country Boundaries and Rivers, Color Gradient for Predicted Abundance
 ggplot() +
@@ -446,7 +446,7 @@ ggplot() +
   )
 
 # Save the final world map with predicted abundance
-ggsave("/path/to/data/Final_1_worldmap.png", height = 7, width = 9, dpi = 600)
+ggsave("/path/to/figure/Final_1_worldmap.png", height = 7, width = 9, dpi = 600)
 
 # Optional: Save additional maps or plots as needed
-ggsave("/path/to/data/Final_1_worldmap_legend.pdf", family = "ArialMT")
+ggsave("/path/to/figure/Final_1_worldmap_legend.pdf", family = "ArialMT")

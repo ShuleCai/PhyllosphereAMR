@@ -3,7 +3,7 @@ library(h2o)
 h2o.init(nthreads = 5, max_mem_size = "80G")
 
 # Load the AutoML model from a saved RDS file (use a dummy path)
-aml <- readRDS("/path/to/data/AutoML_nonagri/optimal_iqr/automl_res_seed37_MAE_iqr.rds")
+aml <- readRDS("/path/to/data/automl_res_seed37_MAE_iqr.rds")
 
 # Get the leaderboard of models from the AutoML run
 lb <- h2o.get_leaderboard(object = aml, extra_columns = "ALL") %>% as.data.frame()
@@ -12,7 +12,7 @@ lb <- h2o.get_leaderboard(object = aml, extra_columns = "ALL") %>% as.data.frame
 h2o.varimp_plot(h2o.getModel(lb$model_id[49]))
 
 # Save the best model from the leaderboard
-h2o.getModel(lb$model_id[49]) %>% saveRDS("/path/to/data/final/nonagri_final_model.rds")
+h2o.getModel(lb$model_id[49]) %>% saveRDS("/path/to/data/nonagri_final_model.rds")
 
 # Read the feature matrix X and the target variable y
 X <- read.csv("/path/to/data/nonagri_models_x_2_feature_selected_iqr.csv")
@@ -100,7 +100,7 @@ perf_all <- rbind(perf_lb_gbm, perf_lb_drf, perf_lb_glm, perf_lb_xgb) %>%
   dplyr::select(-predict_time_per_row_ms, -predict_per_row)
 
 # Save the performance metrics to a CSV file
-perf_all %>% write.csv("/path/to/data/final/nonagri_1_model_radar_performance.csv")
+perf_all %>% write.csv("/path/to/data/nonagri_1_model_radar_performance.csv")
 
 # Reverse some performance metrics (all except R2)
 reverse_cols <- c("rmse", "mse", "mae", "rmsle", "mean_residual_deviance", "training_time_ms", "predict_per_row_ms", "r2_cv_sd")
@@ -131,7 +131,7 @@ colors <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A") %>% rev()
 
 library(fmsb)
 library(extrafont)
-pdf("/path/to/data/final/nonagri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
+pdf("/path/to/data/nonagri_1_model_radar.pdf", family = "ArialMT", width = 5.5, height = 5)
 radarchart(
   radar_data %>% dplyr::select(-model, -mean_residual_deviance, -mse, -r2) %>%
     rename(
@@ -165,8 +165,8 @@ legend(
 dev.off()
 
 # Save the radar chart data
-radar_data %>% write.csv("/path/to/data/final/nonagri_1_model_radar.csv")
-lb[c(49:nrow(lb)), ] %>% write.csv("/path/to/data/final/nonagri_1_model_leaderload.csv")
+radar_data %>% write.csv("/path/to/data/nonagri_1_model_radar.csv")
+lb[c(49:nrow(lb)), ] %>% write.csv("/path/to/data/nonagri_1_model_leaderload.csv")
 
 # Extract model parameters for re-training with different seeds
 original_model <- lb_xgb # Example model to extract parameters
@@ -227,10 +227,10 @@ df_top10 <- df %>%
 # Save the feature importance data
 df %>%
   data.frame() %>%
-  write.csv("/path/to/data/final/nonagri_2_feature_impr_100repeat.csv", row.names = F)
+  write.csv("/path/to/data/nonagri_2_feature_impr_100repeat.csv", row.names = F)
 df_top10 %>%
   as.data.frame() %>%
-  write.csv("/path/to/data/final/nonagri_2_feature_impr_100repeat_top10feature.csv", row.names = F)
+  write.csv("/path/to/data/nonagri_2_feature_impr_100repeat_top10feature.csv", row.names = F)
 
 # Step 5: Calculate relative importance for each feature based on the sum of importance across seeds
 df_m <- df %>% mutate(relative_importance = 100 * (df %>% group_by(seed) %>%
@@ -286,7 +286,7 @@ ggplot(df_top10_mean, aes(x = relative_importance, y = variable)) +
     panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank()
   )
-ggsave(filename = "/path/to/data/final/nonagri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
+ggsave(filename = "/path/to/data/nonagri_2_feature_impr_100repeat.pdf", height = 4, width = 6)
 
 # Create another version of the plot without the y-axis text
 ggplot(df_top10_mean, aes(x = relative_importance, y = variable)) +
@@ -311,7 +311,7 @@ ggplot(df_top10_mean, aes(x = relative_importance, y = variable)) +
     panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank()
   )
-ggsave(filename = "/path/to/data/final/nonagri_2_feature_impr_100repeat_wo_text.pdf", height = 4, width = 3.5)
+ggsave(filename = "/path/to/data/nonagri_2_feature_impr_100repeat_wo_text.pdf", height = 4, width = 3.5)
 
 # Save the data for relative importance and top 10 features
-df_top10_mean %>% write.csv("/path/to/data/final/nonagri_2_feature_impr_100repeat_top10.csv", row.names = F)
+df_top10_mean %>% write.csv("/path/to/data/nonagri_2_feature_impr_100repeat_top10.csv", row.names = F)

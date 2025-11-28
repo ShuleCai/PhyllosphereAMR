@@ -2,11 +2,10 @@ library(h2o)
 
 # Initialize H2O cluster with 5 threads and 80 GB memory
 h2o.init(nthreads = 5, max_mem_size = "80G")
-# h2o.shutdown()  # Uncomment to shut down H2O cluster when done
 
 # Read the feature matrix X and target variable y for Non-Agricultural data
-X <- read.csv("/path/to/data/MAG/figures/ML/nonagri_models_x_2_feature_selected.csv")
-y <- read.csv("/path/to/data/MAG/figures/ML/nonagri_models_y_1_original.csv")$Abun_trans
+X <- read.csv("/path/to/data/nonagri_models_x_2_feature_selected.csv")
+y <- read.csv("/path/to/data/nonagri_models_y_1_original.csv")$Abun_trans
 
 # Combine the feature matrix X and the target variable y into a complete dataset
 data <- cbind(X, data.frame(Abun_trans = y))
@@ -40,19 +39,8 @@ for (seed in c(2)) {
     include_algos = c("DRF", "XGBOOST", "GBM", "GLM", "StackedEnsemble"),
     verbosity = "info",
     nfolds = 5, # 5-fold cross-validation
-    # export_checkpoints_dir = "/path/to/project/AutoML_nonagri/optimal/AutoML_checkpoints"
   )
 
   # Save the AutoML result for this seed
-  saveRDS(aml, paste0("/path/to/project/AutoML_nonagri/optimal/automl_res_seed", seed, "_basicmodels_2000.rds"))
-
-  # Uncomment the following lines to generate SHAP summary plot (interpretability)
-  # png(paste0("/path/to/project/AutoML_nonagri/optimal/automl_res_seed", seed, "_shap.png"), family = "ArialMT")
-  # h2o.shap_summary_plot(aml@leader, newdata = test)
-  # dev.off()
-
-  # Uncomment the following lines to generate variable importance plot for the best model
-  # pdf(paste0("/path/to/project/AutoML_nonagri/optimal/automl_res_seed", seed, "_imp.pdf"), family = "ArialMT")
-  # h2o.varimp_plot(aml@leader)
-  # dev.off()
+  saveRDS(aml, paste0("/path/to/data/AutoML_nonagri/optimal/automl_res_seed", seed, "_basicmodels_2000.rds"))
 }
