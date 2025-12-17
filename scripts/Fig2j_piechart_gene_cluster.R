@@ -6,7 +6,7 @@ library(dplyr)
 acc_tax <- read.csv("data/ARG_carrying_contig_taxonomy.csv")
 
 # Read project metadata
-project_metadata <- read.csv("data/project_metadata.csv")
+project_metadata <- read.csv("data/Metadata_metagenome.csv")
 
 # Read ARG carrying contig quantification data (TPM)
 acc_tpm <- read.csv("data/ARG_carrying_contig_TPM.csv")
