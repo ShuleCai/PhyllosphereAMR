@@ -1,59 +1,74 @@
 # PhyllosphereAMR
 
-## Overview
+## Project Overview
 PhyllosphereAMR is an code repository for the analysis and visualization of antimicrobial resistance (AMR) in phyllosphere. This repository provides scripts for data loading, processing, statistical evaluation, and graphical representation.
 
-Project summary
----------------
-PhyllosphereAMR implements end-to-end analyses for mapping microbiome- and MAG-derived signals related to antimicrobial resistance (AMR) across global / spatial datasets. The repository includes:
-- geospatial extraction and raster handling,
-- per-dataset preprocessing (16S and shotgun/metagenomic),
-- variable selection (correlation filtering + mRMR),
-- AutoML model training and spatial prediction,
-- visualization and post-processing for MAG- and community-level results,
-- spatial extrapolation / future-scenario evaluation and risk mapping.
+## Repository Structure
 
-Goals
------
-- Provide reproducible pipelines to extract spatial covariates, select robust predictors, train predictive models and produce maps.
-- Make scripts modular, parameterizable, and portable across different environments.
-- Replace user-specific absolute paths with configurable root variables (e.g., `/path/to/project`).
-- Reduce duplication by consolidating repeated logic into shared utilities and parameterized scripts.
+### 1. `data/`
+This directory contains all the input datasets used in the analysis. Key files include:
+- `AMRcategory_abundance_tpm.csv`: Abundance of AMR categories in TPM.
+- `ARG_abundance_tpm.csv`: Abundance of ARGs in TPM.
+- `ARG_and_MGE_carrying_contig.csv`: Contigs carrying both ARGs and MGEs.
+- `ARG_annotation_results.csv`: Annotation results for ARGs.
+- `MAG_bigtable.csv`: Metadata for metagenome-assembled genomes (MAGs).
+- `Metadata_metagenome.csv`: Metadata for metagenomic samples.
 
-Repository layout
-----------------
-Primary subdirectories:
-- 16s_rRNA_global_mapping/  — 16S workflows (geodata, feature selection, AutoML and mapping)
-- Metagenomic_global_mapping/  — shotgun/metagenomic workflows (geodata, feature selection, AutoML and mapping)
-- MAG/  — MAG-level analyses, clustering, plotting and statistical comparisons
+### 2. `figures/`
+This directory stores all the generated figures from the analysis. Subdirectories include:
+- `Fig2j/`: Contains pie charts for gene cluster proportions.
 
-Naming conventions 
-------------------------------
-- File names: <group>_<step>_<short_snake_case_description>.R  
-  Examples:
-  - 03_01_geodata_extraction.R
-  - 02_05_auto_ml_train_optimal.R
-- Keep variable names and environment variables in snake_case
+### 3. `scripts/`
+This directory contains all the R scripts used for data analysis and visualization. Key scripts include:
+- `Fig1a_resistome_patterns_circular.R`: Generates circular plots for resistome patterns.
+- `Fig2f_heatmap_ARG_carrying_contig.R`: Creates heatmaps for ARG-carrying contigs.
+- `Fig4ab_MAG_kmeans_umap.R`: Performs UMAP and K-means clustering on MAG data.
+- `global_mapping/`: Contains scripts for global mapping and extrapolation analyses.
 
-High-level pipeline flow
-------------------------
-Common steps (applies to both 16S and metagenomic flows):
-1. Geodata extraction & imputation: extract raster covariates at sample coordinates, compute NA diagnostics, remove poor predictors.
-2. Feature selection: correlation-based pruning + mRMR (or equivalent) to generate compact predictor sets.
-3. Model training (AutoML): seed-based exploration → optimal model training; maintain reproducibility via controlled seeds and env snapshots.
-4. Global prediction: predict across the raster stack, combine results, evaluate and create maps/reports.
-5. Extrapolation & scenario analysis: PCA convex hull, band-based extrapolation checks, future climate or landuse scenario mapping.
+### 4. `global_mapping/`
+This subdirectory includes scripts for predictive modeling and risk analysis:
+- `1_prediction_agri.R`: Predictions for agricultural samples.
+- `4_risk_minibacth_kmeans.R`: Mini-batch K-means clustering for risk analysis.
+- `8_extrapolation_PCA_convex_hull.R`: PCA and convex hull analysis for extrapolation.
 
-Files organized by group
-------------------------
-16s_rRNA_global_mapping/
-- Geodata & imputation: 3_16s_rRNA_global_mapping_01_geodata.R
-- Feature selection: 3_16s_rRNA_global_mapping_02_feature_selection_cor_mrmr.R
-- AutoML training: 03–06 (seed exploration and optimal training for agri/non-agri)
-- Prediction & mapping: 07–16 (prediction, combined maps, future scenario analyses)
+## Key Features
+- **Data Processing**: Scripts for cleaning and merging datasets.
+- **Visualization**: Heatmaps, chord diagrams, pie charts, and UMAP plots.
+- **Statistical Analysis**: Kruskal-Wallis tests, clustering, and dimensionality reduction.
 
-Metagenomic_global_mapping/
-- Mirror flow with 2_* naming: geodata extraction, 2_* feature selection, 2_* AutoML, 2_* prediction & visualization
+## How to Use
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ShuleCai/PhyllosphereAMR.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd PhyllosphereAMR
+   ```
+3. Install required R packages (e.g., `dplyr`, `ggplot2`, `ComplexHeatmap`).
+4. Run the scripts in the `scripts/` directory to reproduce the analyses.
 
-MAG/
-- 1_* scripts for MAG clustering, family-level visuals, pairwise testing and distribution analyses.
+## Dependencies
+The project relies on the following R packages:
+- `dplyr`
+- `ggplot2`
+- `ComplexHeatmap`
+- `circlize`
+- `tidyr`
+- `umap`
+- `cluster`
+- `ggpubr`
+- `agricolae`
+
+## Outputs
+The analysis generates:
+- Heatmaps for ARG and MGE abundance.
+- Chord diagrams for ARG-MGE co-occurrence.
+- Pie charts for gene cluster proportions.
+- UMAP and clustering visualizations.
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## Acknowledgments
+Special thanks to all contributors and collaborators who made this project possible.
