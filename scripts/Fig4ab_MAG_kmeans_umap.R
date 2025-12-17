@@ -74,7 +74,7 @@ origin_data_s <- origin_data %>% mutate(ARG_count = selected_data$ARG_count,
 # Generate parallel coordinate plots
 library(GGally)
 pdf("./figures/Fig4b.pdf", family = "ArialMT", width = 6, height = 5)
-ggparcoord(origin_data_s %>% mutate(Cluster = as.factor(Cluster)), columns = 43:45, groupColumn = "Cluster", scale = "uniminmax",
+ggparcoord(origin_data_s %>% mutate(Cluster = as.factor(Cluster)), columns = 42:44, groupColumn = "Cluster", scale = "uniminmax",
            showPoints = T, alphaLines = 0.6) +
   labs(y = "Normalized richness") +
   scale_color_manual(values = c("red", "#6f9af3", "#69b3a2")) +
